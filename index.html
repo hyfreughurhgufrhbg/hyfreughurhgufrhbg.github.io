@@ -1,63 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>Spotify GitHub Profile Widget</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sar-flood-segmentation - Map Floods From Satellite Images</title>
+<meta name="description" content="Download sar-flood-segmentation, a free Windows tool that turns Sentinel-1 satellite radar images into clear flood maps. Benchmarking U-Net and SegFormer models on the Sen1Floods11 dataset. MSc dissertation, University of Hull.">
+<meta name="keywords" content="deep learning, flood mapping, pytorch, remote sensing, sar, segformer, semantic segmentation, sen1floods11, sentinel-1, unet, flood segmentation, satellite imagery, sar-flood-segmentation">
+<meta name="author" content="University of Hull - MSc Dissertation Project">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1f6f8b">
+<link rel="canonical" href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sar-flood-segmentation">
+<meta property="og:title" content="sar-flood-segmentation - Map Floods From Satellite Images">
+<meta property="og:description" content="A free Windows application that turns satellite radar images into easy-to-read flood maps using deep learning models trained on the Sen1Floods11 dataset.">
+<meta property="og:url" content="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="sar-flood-segmentation - Map Floods From Satellite Images">
+<meta name="twitter:description" content="Benchmarking CNN and Transformer models for cross-geographic flood segmentation from Sentinel-1 SAR imagery.">
 </head>
-<body>
-  <header class="topbar">Spotify GitHub Profile Widget</header>
-  <main class="page">
-    <header class="page-heading">
-      <div><p class="eyebrow">Your Spotify widget</p><h1>Spotify GitHub Profile</h1><p class="intro">Sign in on this site, preview your current or recently played track, and customize the widget.</p></div>
-      <div class="account-actions"><span id="connection-status" class="connection-status" role="status">Not connected</span><button id="spotify-connect" class="spotify-button" type="button">Connect Spotify</button><button id="spotify-disconnect" class="disconnect-button hidden" type="button">Disconnect</button></div>
-    </header>
+<body style="margin:0; padding:0; background-color:#f4f7fa; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#22313f; line-height:1.7; font-size:17px;">
 
-    <div class="studio-grid">
-      <section class="preview-section" aria-labelledby="preview-heading">
-        <h2 id="preview-heading">Live preview</h2>
-        <div id="widget-preview" class="widget-preview">
-          <div id="cover-wrap" class="cover-wrap"><img id="preview-art" alt="Current track album cover" /><canvas id="gradient-canvas" class="gradient-canvas" aria-hidden="true"></canvas></div>
-          <div class="track-info"><p id="preview-artist" class="artist"></p><p id="preview-song" class="song">Connect Spotify to load your track</p><svg id="preview-wave" class="wave" viewBox="0 0 360 24" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 C12 12 12 3 24 3 S36 21 48 21 60 7 72 7 84 17 96 17 108 3 120 3 132 21 144 21 156 8 168 8 180 16 192 16 204 4 216 4 228 20 240 20 252 7 264 7 276 17 288 17 300 3 312 3 324 21 336 21 348 12 360 12" /></svg></div>
-        </div>
-        <p id="status-message" class="status-message" aria-live="polite">Connect to Spotify to show your current track or, when idle, your recent play.</p>
-        <section class="code-section" aria-label="Shareable preview link">
-          <div class="code-tabs" role="tablist" aria-label="Code format"><button id="markdown-tab" class="code-tab active" role="tab" aria-selected="true" type="button">Markdown Link</button><button id="html-tab" class="code-tab" role="tab" aria-selected="false" type="button">HTML Link</button></div>
-          <textarea id="code-output" readonly aria-label="Generated preview link" placeholder="Connect Spotify to generate a shareable preview link"></textarea>
-          <button id="copy-code" class="copy-button" type="button">▢ &nbsp; Copy to clipboard</button>
-          <p id="copy-status" class="copy-status" aria-live="polite"></p>
-          <p class="embed-note">This is a shareable page link. A live image in a GitHub README needs a server-generated image endpoint; GitHub Pages alone cannot provide one.</p>
-        </section>
-      </section>
+<div style="max-width:900px; margin:0 auto; padding:24px 18px 70px 18px;">
 
-      <section class="settings" aria-label="Widget customization">
-        <h2>Customize</h2>
-        <div class="options-grid">
-          <label><input id="cover-image" type="checkbox" checked /> Cover image</label>
-          <label><input id="show-offline" type="checkbox" checked /> Show recently played when idle</label>
-          <label><input id="interchange" type="checkbox" /> Interchange artist and song</label>
-          <label><input id="profanity" type="checkbox" /> Censor profanity</label>
-          <label><input id="hide-remaster" type="checkbox" /> Hide Remaster</label>
-          <label><input id="show-wave" type="checkbox" checked /> Show audio bar</label>
-        </div>
-        <div class="color-settings">
-          <label class="color-setting">Bar color<input id="bar-color" type="color" value="#ffffff" /></label>
-          <label class="color-setting">Background color<input id="background-color" type="color" value="#07a196" /></label>
-        </div>
-        <section class="gradient-editor" aria-labelledby="gradient-title">
-          <div class="gradient-heading"><div><p class="eyebrow">Artwork treatment</p><h3 id="gradient-title">Gradient Map</h3><p class="field-help">Maps dark, middle and bright cover pixels to your selected colors.</p></div><label class="enable-gradient"><input id="gradient-enabled" type="checkbox" checked /> Enable</label></div>
-          <div id="gradient-ramp" class="gradient-ramp"><label class="gradient-stop stop-shadow"><input id="shadow-color" type="color" value="#172b46" aria-label="Shadow color" /></label><label class="gradient-stop stop-mid"><input id="mid-color" type="color" value="#8167a8" aria-label="Midtone color" /></label><label class="gradient-stop stop-highlight"><input id="highlight-color" type="color" value="#ffd6a0" aria-label="Highlight color" /></label></div>
-          <div class="gradient-labels"><span>Shadows</span><span>Midtones</span><span>Highlights</span></div>
-          <label class="strength-setting"><span>Map strength</span><input id="gradient-strength" type="range" min="0" max="100" value="100" /><output id="strength-output">100%</output></label>
-        </section>
-      </section>
-    </div>
-  </main>
-  <script src="app.js"></script>
+  <!-- HEADER CARD -->
+  <div style="background:#ffffff; border-radius:16px; padding:38px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h1 style="font-size:2.15em; line-height:1.25; margin:0 0 18px 0; color:#12263a; font-weight:800; letter-spacing:-0.5px;">
+      🌊 sar-flood-segmentation - Map Floods From Satellite Images
+    </h1>
+
+    <p style="font-size:1.06em; margin:0 0 26px 0; color:#41576d;">
+      A free program for Windows that takes satellite radar pictures of the Earth and turns them into simple, colour-coded flood maps. It was built as an MSc dissertation project at the University of Hull and compares two different artificial-intelligence approaches to finding water in pictures taken from space.
+    </p>
+
+    <p style="margin:0 0 22px 0;">
+      <a href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation"
+         style="display:inline-block; background:linear-gradient(135deg,#ff5f6d,#ffc371); color:#ffffff; font-size:1.08em; font-weight:700; text-decoration:none; padding:17px 40px; border-radius:50px; box-shadow:0 8px 20px rgba(255,95,109,0.38); letter-spacing:0.2px;">
+        ⬇️ Get sar-flood-segmentation
+      </a>
+    </p>
+
+    <p style="margin:0; font-size:0.93em; color:#6b7c8d;">
+      Official download page: <span style="word-break:break-all; color:#1f6f8b;">https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation</span>
+    </p>
+
+  </div>
+
+  <!-- INTRO -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🛰️ What This Software Does
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      Floods are difficult to track from the ground, especially in remote areas or during heavy storms. Satellites solve part of that problem: they can photograph huge areas of land in a single pass. But there is a catch. Ordinary photographs are useless at night and useless through thick cloud, which is exactly the weather you get during a flood.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      This software works with a different kind of satellite picture called <strong>SAR</strong> (Synthetic Aperture Radar). Radar pictures are taken with radio waves instead of light, so they work perfectly at night and see straight through cloud. The downside is that radar images look like noisy grey static to a human being. Water and land are hard to tell apart with the naked eye.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      That is the job of this program. It reads a radar image and produces a <strong>segmentation map</strong> — a picture where every pixel is labelled either "flooded" or "not flooded". The result is a clean, easy-to-read map you can look at in any ordinary image viewer.
+    </p>
+
+    <p style="margin:0;">
+      The project also does something more scientific. It compares two families of AI models — traditional convolutional networks (U-Net style) and modern Transformer models (SegFormer style) — and reports how well each one performs when it is asked to map floods in places it has never seen before. All of this is tested on the well-known <strong>Sen1Floods11</strong> benchmark dataset.
+    </p>
+
+  </div>
+
+  <!-- WHAT'S INSIDE -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      📦 What Comes With It
+    </h2>
+
+    <ul style="margin:0; padding-left:22px;">
+      <li style="margin-bottom:10px;">A ready-to-run flood mapping application for Windows, with no coding required.</li>
+      <li style="margin-bottom:10px;">Two complete, pre-trained flood detection models: a U-Net style model and a SegFormer style model.</li>
+      <li style="margin-bottom:10px;">The full Sen1Floods11 experiment setup, so you can see exactly how the results in the dissertation were produced.</li>
+      <li style="margin-bottom:10px;">Sample Sentinel-1 radar images and their matching flood maps, so you can try the program immediately without hunting for data.</li>
+      <li style="margin-bottom:10px;">A scoring and comparison report that shows which model performed better and where.</li>
+      <li style="margin-bottom:0;">Plain-language documentation covering every step, from download to reading your first map.</li>
+    </ul>
+
+  </div>
+
+  <!-- REQUIREMENTS -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ✅ Before You Begin
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      Please check the following list before you download anything. If your computer meets these requirements, everything should run smoothly.
+    </p>
+
+    <ul style="margin:0 0 16px 0; padding-left:22px;">
+      <li style="margin-bottom:10px;"><strong>Operating system:</strong> Windows 10 or Windows 11, 64-bit.</li>
+      <li style="margin-bottom:10px;"><strong>Memory:</strong> 8 GB of RAM minimum. 16 GB is recommended for working with large images.</li>
+      <li style="margin-bottom:10px;"><strong>Free disk space:</strong> Around 10 GB. The models and the sample satellite data take up a fair amount of room.</li>
+      <li style="margin-bottom:10px;"><strong>Internet connection:</strong> Needed only for the initial download.</li>
+      <li style="margin-bottom:10px;"><strong>Graphics card:</strong> Optional. The program runs on a normal processor, but if your computer has a dedicated NVIDIA graphics card the processing will be considerably faster.</li>
+      <li style="margin-bottom:0;"><strong>Permissions:</strong> You should be able to install software on your own machine, or have an administrator available.</li>
+    </ul>
+
+    <p style="margin:0; background:#fff8e1; border-radius:10px; padding:14px 18px; font-size:0.96em; color:#6b5b1f;">
+      Tip: close other large programs such as video editors or games before you start, so the flood mapping has enough memory to work with.
+    </p>
+
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ⬇️ Download and Install
+    </h2>
+
+    <p style="margin:0 0 18px 0;">
+      Everything lives on the project's official page. Visit this link to download the application.
+    </p>
+
+    <p style="margin:0 0 24px 0;">
+      <a href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation"
+         style="display:inline-block; background:linear-gradient(135deg,#00b09b,#96c93d); color:#ffffff; font-size:1.05em; font-weight:700; text-decoration:none; padding:16px 36px; border-radius:50px; box-shadow:0 8px 20px rgba(0,176,155,0.35);">
+        Download sar-flood-segmentation
+      </a>
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      Follow these steps, in order. You do not need to understand the technical parts; just work down the list.
+    </p>
+
+    <ol style="margin:0 0 18px 0; padding-left:24px;">
+      <li style="margin-bottom:14px;"><strong>Open the link.</strong> Click the download button above, or type the address into your web browser. The project page will appear.</li>
+      <li style="margin-bottom:14px;"><strong>Start the download.</strong> Look for the download button near the top of the page. Your browser will ask where to save the file — the Downloads folder is a good choice.</li>
+      <li style="margin-bottom:14px;"><strong>Wait for it to finish.</strong> Depending on your internet speed this can take a few minutes. Do not close the browser window until the progress bar has completed.</li>
+      <li style="margin-bottom:14px;"><strong>Unpack the file.</strong> Right-click the downloaded file in your Downloads folder and choose <em>Extract All</em>. When asked where to put it, choose something simple and short, such as your Desktop or <em>C:\sar-flood-segmentation</em>. Avoid putting it deep inside many nested folders.</li>
+      <li style="margin-bottom:14px;"><strong>Open the folder.</strong> Once extraction is complete, open the new folder. You should see a start file, a folder of models and a folder of sample images.</li>
+      <li style="margin-bottom:14px;"><strong>Launch the program.</strong> Double-click the start file. If Windows shows a security prompt asking whether to run it, choose <em>Run</em> or <em>Allow</em>.</li>
+      <li style="margin-bottom:0;"><strong>That's it.</strong> The main window will open and you are ready to load your first radar image.</li>
+    </ol>
+
+    <p style="margin:0; background:#e8f4f8; border-radius:10px; padding:14px 18px; font-size:0.96em; color:#1f5c73;">
+      Important: keep the start file inside the folder it came in. If you move it somewhere else on its own, the program will not be able to find its models and sample images.
+    </p>
+
+  </div>
+
+  <!-- FIRST RUN -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🖥️ Your First Run, Step by Step
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      When the window opens you will see a simple layout: an area for your input image, a preview panel, and a set of buttons. Here is the easiest way to get a result.
+    </p>
+
+    <ol style="margin:0 0 16px 0; padding-left:24px;">
+      <li style="margin-bottom:12px;"><strong>Choose a sample image.</strong> Click the input area and browse to the folder called <em>samples</em> that came with the program. Pick any of the radar images inside it.</li>
+      <li style="margin-bottom:12px;"><strong>Preview it.</strong> The image appears in the preview panel. It will look grey, grainy and quite noisy. That is completely normal for radar data.</li>
+      <li style="margin-bottom:12px;"><strong>Pick a model.</strong> Use the model selector to choose either the U-Net model or the SegFormer model. If you are unsure, start with U-Net — it is faster.</li>
+      <li style="margin-bottom:12px;"><strong>Press the map button.</strong> The program will work through the image. On a typical laptop this takes somewhere between a few seconds and a minute.</li>
+      <li style="margin-bottom:12px;"><strong>Look at the result.</strong> A new picture appears next to the original. The overlay shows where the model believes water is present.</li>
+      <li style="margin-bottom:0;"><strong>Save your map.</strong> Use the save button to store the result anywhere you like. It saves as a normal image file you can open, print or email.</li>
+    </ol>
+
+    <p style="margin:0;">
+      To try your own data, replace the sample image with any Sentinel-1 radar image you have downloaded from a satellite data service. The program accepts standard image files and will resize them automatically.
+    </p>
+
+  </div>
+
+  <!-- READING RESULTS -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🗺️ Reading Your Flood Map
+    </h2>
+
+    <p style="margin:0 0 14px 0;">
+      The output is deliberately simple so that anyone can understand it without training.
+    </p>
+
+    <ul style="margin:0 0 16px 0; padding-left:22px;">
+      <li style="margin-bottom:10px;"><strong>Highlighted areas</strong> show water that the model has detected. These are the flooded zones.</li>
+      <li style="margin-bottom:10px;"><strong>Plain, unhighlighted areas</strong> are land the model considers dry.</li>
+      <li style="margin-bottom:10px;"><strong>Faint or patchy edges</strong> along a boundary usually mean the model was uncertain — this commonly happens around riverbanks and wet fields.</li>
+    </ul>
+
+    <p style="margin:0;">
+      No automated map is perfect. Radar can struggle with very calm water, with dense city buildings and with steep hills. Treat the output as a strong first draft that helps you see the big picture quickly, rather than as a legal or safety-critical record.
+    </p>
+
+  </div>
+
+  <!-- MODELS -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🧠 The Two Models Compared
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      The heart of the dissertation is a fair comparison between two very different ways of teaching a computer to recognise water.
+    </p>
+
+    <p style="margin:0 0 12px 0;">
+      <strong>The U-Net approach (convolutional network).</strong> This is the classic workhorse of image analysis. It scans the picture in small overlapping windows and learns simple patterns first — edges, textures, brightness — then combines them into larger shapes. It is compact, predictable and very fast to run on ordinary hardware.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      <strong>The SegFormer approach (Transformer network).</strong> This is a newer design that looks at the whole picture at once and learns which parts relate to which. It can capture long, connected shapes such as a river valley filling up, which the window-based approach sometimes misses. The trade-off is that it needs more computing power.
+    </p>
+
+    <p style="margin:0;">
+      The key question the project answers is <em>cross-geographic performance</em>: when a model is trained on floods in one part of the world, how well does it cope with floods somewhere completely different? The comparison report included with the download lays out the scores side by side so you can see the answer for yourself.
+    </p>
+
+  </div>
+
+  <!-- FEATURES -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ✨ Key Features
+    </h2>
+
+    <ul style="margin:0; padding-left:22px;">
+      <li style="margin-bottom:10px;">One-click flood mapping from radar satellite images.</li>
+      <li style="margin-bottom:10px;">Two pre-trained models included, so there is nothing to train or configure.</li>
+      <li style="margin-bottom:10px;">Works with night-time and cloudy-weather imagery, where normal photographs fail.</li>
+      <li style="margin-bottom:10px;">Side-by-side comparison view of original image and flood map.</li>
+      <li style="margin-bottom:10px;">Built-in scoring tools using the standard Sen1Floods11 benchmark.</li>
+      <li style="margin-bottom:10px;">Bundled sample data so you can test the program within minutes of installing it.</li>
+      <li style="margin-bottom:0;">Completely free and offline once installed.</li>
+    </ul>
+
+  </div>
+
+  <!-- TROUBLESHOOTING -->
+  <div style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sar-flood-segmentation - Spot Floods in Satellite Images</title>
+<meta name="description" content="Download sar-flood-segmentation for Windows. A free, easy-to-use application that turns Sentinel-1 radar satellite images into clear flood maps using U-Net and SegFormer deep learning models trained on Sen1Floods11.">
+<meta name="keywords" content="deep-learning, flood-mapping, pytorch, remote-sensing, sar, segformer, semantic-segmentation, sen1floods11, sentinel-1, unet, flood segmentation, satellite imagery, sar-flood-segmentation">
+<meta name="author" content="MSc Dissertation Project - University of Hull">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1f6f8b">
+<link rel="canonical" href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sar-flood-segmentation">
+<meta property="og:title" content="sar-flood-segmentation - Spot Floods in Satellite Images">
+<meta property="og:description" content="A free Windows application that turns radar satellite images into simple flood maps using U-Net and SegFormer models benchmarked on Sen1Floods11.">
+<meta property="og:url" content="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="sar-flood-segmentation - Spot Floods in Satellite Images">
+<meta name="twitter:description" content="Benchmarking CNN and Transformer models for cross-geographic flood segmentation from Sentinel-1 SAR imagery.">
+</head>
+<body style="margin:0; padding:0; background-color:#eef3f7; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#22313f; line-height:1.7; font-size:17px;">
+
+<main style="max-width:900px; margin:0 auto; padding:26px 18px 70px 18px;">
+
+  <header style="background:#ffffff; border-radius:16px; padding:38px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h1 style="font-size:2.15em; line-height:1.25; margin:0 0 18px 0; color:#12263a; font-weight:800; letter-spacing:-0.5px;">
+      🌊 sar-flood-segmentation - Spot Floods in Satellite Images
+    </h1>
+
+    <p style="font-size:1.06em; margin:0 0 26px 0; color:#41576d;">
+      A free program for Windows that reads radar pictures taken from space and turns them into clear, colour-coded flood maps. It was created as an MSc dissertation project at the University of Hull and compares two very different artificial-intelligence methods for finding water on the ground.
+    </p>
+
+    <p style="margin:0 0 24px 0;">
+      <a href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation"
+         style="display:inline-block; background:linear-gradient(135deg,#ff5f6d,#ffc371); color:#ffffff; font-size:1.08em; font-weight:700; text-decoration:none; padding:17px 40px; border-radius:50px; box-shadow:0 8px 20px rgba(255,95,109,0.38); letter-spacing:0.2px;">
+        ⬇️ Download the Application
+      </a>
+    </p>
+
+    <p style="margin:0; font-size:0.93em; color:#6b7c8d;">
+      Official project page: <span style="word-break:break-all; color:#1f6f8b;">https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation</span>
+    </p>
+  </header>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🛰️ What This Software Does
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      Floods are hard to track from the ground, especially in remote areas or in the middle of a storm. Satellites help, because they can photograph an enormous stretch of land in a single pass. But there is a catch. Ordinary photographs are useless at night and useless through thick cloud — which is exactly the weather you get during a flood.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      This software uses a different type of satellite picture called <strong>SAR</strong>, which stands for Synthetic Aperture Radar. Radar images are captured with radio waves instead of light, so they work perfectly in the dark and see straight through cloud. The drawback is that radar images look like grainy grey static to a human being. Water and dry land are very difficult to tell apart by eye.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      That is the job this program performs. It reads a radar image and produces a <strong>flood map</strong> — an image in which the computer has decided, for every tiny dot of the picture, whether that spot is covered in water or not. The final result is a clean, readable map you can open in any ordinary image viewer.
+    </p>
+
+    <p style="margin:0;">
+      The project does something more scientific as well. It compares two families of AI models — traditional convolutional networks such as U-Net, and newer Transformer models such as SegFormer — and reports how well each one performs when asked to map floods in places it has never seen before. All of this is tested against the widely used <strong>Sen1Floods11</strong> benchmark dataset, which is the standard reference for this kind of research.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      📦 What Comes With It
+    </h2>
+
+    <ul style="margin:0; padding-left:22px;">
+      <li style="margin-bottom:10px;">A ready-to-run flood mapping application for Windows, with no coding required at any stage.</li>
+      <li style="margin-bottom:10px;">Two complete, already-trained flood detection models: a U-Net style model and a SegFormer style model.</li>
+      <li style="margin-bottom:10px;">The full Sen1Floods11 experiment setup, so you can see exactly how the dissertation results were produced.</li>
+      <li style="margin-bottom:10px;">Sample Sentinel-1 radar images with their matching flood maps, so you can try the program immediately without searching for data.</li>
+      <li style="margin-bottom:10px;">A scoring and comparison report showing which model performed better and where it struggled.</li>
+      <li style="margin-bottom:0;">Plain-language documentation covering every step, from download to reading your first flood map.</li>
+    </ul>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ✅ Before You Begin
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      Please check the list below before you download anything. If your computer meets these requirements, everything should run smoothly from the first attempt.
+    </p>
+
+    <ul style="margin:0 0 16px 0; padding-left:22px;">
+      <li style="margin-bottom:10px;"><strong>Operating system:</strong> Windows 10 or Windows 11, 64-bit edition.</li>
+      <li style="margin-bottom:10px;"><strong>Memory:</strong> 8 GB of RAM as a minimum. 16 GB is recommended if you plan to work with large images.</li>
+      <li style="margin-bottom:10px;"><strong>Free disk space:</strong> Around 10 GB. The models and the sample satellite data take up a fair amount of room.</li>
+      <li style="margin-bottom:10px;"><strong>Internet connection:</strong> Needed only for the initial download. After that the program works completely offline.</li>
+      <li style="margin-bottom:10px;"><strong>Graphics card:</strong> Optional. Everything runs on a normal processor, but a dedicated NVIDIA graphics card will make the processing noticeably faster.</li>
+      <li style="margin-bottom:0;"><strong>Permissions:</strong> You should be able to install software on your own machine, or have an administrator available to help.</li>
+    </ul>
+
+    <p style="margin:0; background:#fff8e1; border-radius:10px; padding:14px 18px; font-size:0.96em; color:#6b5b1f;">
+      Tip: close other demanding programs such as video editors or games before you start, so the flood mapping has enough memory to work with.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ⬇️ Download and Install
+    </h2>
+
+    <p style="margin:0 0 18px 0;">
+      Everything lives on the project's official page. Visit this link to download the application.
+    </p>
+
+    <p style="margin:0 0 24px 0;">
+      <a href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation"
+         style="display:inline-block; background:linear-gradient(135deg,#00b09b,#96c93d); color:#ffffff; font-size:1.05em; font-weight:700; text-decoration:none; padding:16px 36px; border-radius:50px; box-shadow:0 8px 20px rgba(0,176,155,0.35);">
+        Download sar-flood-segmentation
+      </a>
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      Follow these steps in order. You do not need to understand the technical parts; simply work down the list from top to bottom.
+    </p>
+
+    <ol style="margin:0 0 18px 0; padding-left:24px;">
+      <li style="margin-bottom:14px;"><strong>Open the link.</strong> Click the download button above, or type the address into your web browser. The project page will appear.</li>
+      <li style="margin-bottom:14px;"><strong>Start the download.</strong> Look for the download button near the top of the page. Your browser will ask where to save the file — your Downloads folder is a good choice.</li>
+      <li style="margin-bottom:14px;"><strong>Wait for it to finish.</strong> Depending on your internet speed this can take a few minutes. Do not close the browser window until the progress bar has completed.</li>
+      <li style="margin-bottom:14px;"><strong>Unpack the file.</strong> Right-click the downloaded file in your Downloads folder and choose <em>Extract All</em>. When asked where to put it, choose somewhere simple and short, such as your Desktop or <em>C:\sar-flood-segmentation</em>. Avoid burying it deep inside many nested folders.</li>
+      <li style="margin-bottom:14px;"><strong>Open the folder.</strong> Once extraction has finished, open the new folder. You should see a start file, a folder of models and a folder of sample images.</li>
+      <li style="margin-bottom:14px;"><strong>Launch the program.</strong> Double-click the start file. If Windows shows a security prompt asking whether to run it, choose <em>Run</em> or <em>Allow</em>.</li>
+      <li style="margin-bottom:0;"><strong>You are ready.</strong> The main window will open and you can load your first radar image straight away.</li>
+    </ol>
+
+    <p style="margin:0; background:#e8f4f8; border-radius:10px; padding:14px 18px; font-size:0.96em; color:#1f5c73;">
+      Important: keep the start file inside the folder it came in. If you move it somewhere else on its own, the program will not be able to find its models and sample images.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🖥️ Your First Run, Step by Step
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      When the window opens you will see a simple layout: an area for your input image, a preview panel, and a set of clearly labelled buttons. Here is the easiest way to get a result.
+    </p>
+
+    <ol style="margin:0 0 16px 0; padding-left:24px;">
+      <li style="margin-bottom:12px;"><strong>Choose a sample image.</strong> Click the input area and browse to the folder called <em>samples</em> that came with the program. Pick any of the radar images inside it.</li>
+      <li style="margin-bottom:12px;"><strong>Preview it.</strong> The image appears in the preview panel. It will look grey, grainy and quite noisy. That is completely normal for radar data.</li>
+      <li style="margin-bottom:12px;"><strong>Pick a model.</strong> Use the model selector to choose either the U-Net model or the SegFormer model. If you are unsure, start with U-Net, because it is faster.</li>
+      <li style="margin-bottom:12px;"><strong>Press the map button.</strong> The program will work through the image. On a typical laptop this takes somewhere between a few seconds and a minute.</li>
+      <li style="margin-bottom:12px;"><strong>Look at the result.</strong> A new picture appears beside the original. The highlighted areas show where the model believes water is present.</li>
+      <li style="margin-bottom:0;"><strong>Save your map.</strong> Use the save button to store the result wherever you like. It saves as a normal image file you can open, print or email.</li>
+    </ol>
+
+    <p style="margin:0;">
+      To work with your own data, simply replace the sample image with any Sentinel-1 radar image you have downloaded from a satellite data service. The program accepts standard image files and will resize them automatically.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🗺️ Reading Your Flood Map
+    </h2>
+
+    <p style="margin:0 0 14px 0;">
+      The output is deliberately simple, so that anyone can understand it without any training in remote sensing.
+    </p>
+
+    <ul style="margin:0 0 16px 0; padding-left:22px;">
+      <li style="margin-bottom:10px;"><strong>Highlighted areas</strong> show water the model has detected. These are the flooded zones.</li>
+      <li style="margin-bottom:10px;"><strong>Plain, unhighlighted areas</strong> are land the model considers dry.</li>
+      <li style="margin-bottom:10px;"><strong>Faint or patchy edges</strong> along a boundary usually mean the model was uncertain. This commonly happens around riverbanks and wet fields.</li>
+    </ul>
+
+    <p style="margin:0;">
+      No automated map is ever perfect. Radar can struggle with very calm water, with dense city buildings and with steep hillsides. Treat the output as a strong first draft that helps you see the big picture quickly, rather than as a legal or safety-critical record.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🧠 The Two Models Compared
+    </h2>
+
+    <p style="margin:0 0 16px 0;">
+      The heart of the dissertation is a fair comparison between two very different ways of teaching a computer to recognise water.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      <strong>The U-Net approach (convolutional network).</strong> This is the classic workhorse of image analysis. It scans the picture in small overlapping windows and learns simple patterns first — edges, textures, brightness — then combines them into larger shapes. It is compact, predictable and very fast to run on ordinary hardware.
+    </p>
+
+    <p style="margin:0 0 16px 0;">
+      <strong>The SegFormer approach (Transformer network).</strong> This is a newer design that looks at the whole picture at once and learns which parts relate to which. It can capture long, connected shapes such as a river valley filling up, which the window-based approach sometimes misses. The trade-off is that it needs more computing power.
+    </p>
+
+    <p style="margin:0;">
+      The key question the project answers is <em>cross-geographic performance</em>: when a model is trained on floods in one part of the world, how well does it cope with floods somewhere completely different? The comparison report included with the download lays out the scores side by side, so you can see the answer for yourself.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ✨ Key Features
+    </h2>
+
+    <ul style="margin:0; padding-left:22px;">
+      <li style="margin-bottom:10px;">One-click flood mapping from radar satellite images.</li>
+      <li style="margin-bottom:10px;">Two pre-trained models included, so there is nothing to train or configure.</li>
+      <li style="margin-bottom:10px;">Works with night-time and cloudy-weather imagery, where ordinary photographs fail completely.</li>
+      <li style="margin-bottom:10px;">Side-by-side comparison view of the original image and the resulting flood map.</li>
+      <li style="margin-bottom:10px;">Built-in scoring tools using the standard Sen1Floods11 benchmark.</li>
+      <li style="margin-bottom:10px;">Bundled sample data, so you can test the program within minutes of installing it.</li>
+      <li style="margin-bottom:0;">Completely free, and fully offline once installed.</li>
+    </ul>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      🔧 Troubleshooting
+    </h2>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>The program window closes immediately.</strong> This usually means the start file has been separated from its folder. Move it back inside the extracted folder and try again.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>Windows shows a warning when I open the file.</strong> This is normal for software downloaded from the internet. Choose the option to run it anyway. If you prefer, you can right-click the file, open its properties and tick the box to allow it.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>The mapping step takes a long time.</strong> Large images need more time. Try a sample image first to confirm everything works, then work up to bigger pictures. Closing other open programs also helps considerably.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>The result looks blank.</strong> Check that you selected a radar image rather than a normal photograph. Radar files often have long, technical names; the sample folder shows what a valid file looks like.
+    </p>
+
+    <p style="margin:0;">
+      <strong>You need more storage space.</strong> Delete the sample data folder once you are comfortable with the program. It can always be downloaded again should you need it.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      ❓ Common Questions
+    </h2>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>Do I need to know how to program?</strong> No. The application is designed for end users. Everything technical has already been done for you.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>Is it really free?</strong> Yes, there is no cost and no account is required.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>Does it send my images anywhere?</strong> No. Once installed, all processing happens on your own computer.
+    </p>
+
+    <p style="margin:0 0 14px 0;">
+      <strong>Can I use it for real emergency planning?</strong> It is a research tool built for a university dissertation. Use it as a helper and a learning aid, and always confirm important findings with official sources.
+    </p>
+
+    <p style="margin:0;">
+      <strong>Which model should I choose?</strong> Start with U-Net for speed. Switch to SegFormer when you want the very best detail on large, connected flooded areas.
+    </p>
+  </section>
+
+  <section style="background:#ffffff; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.08); margin-bottom:28px;">
+    <h2 style="font-size:1.5em; margin:0 0 16px 0; color:#12263a; border-left:5px solid #1f6f8b; padding-left:14px; font-weight:700;">
+      📄 Licence and Credits
+    </h2>
+
+    <p style="margin:0 0 14px 0;">
+      This project was produced as part of an MSc dissertation at the University of Hull. It builds on the openly published Sen1Floods11 dataset and on Sentinel-1 radar imagery made available through the European Space Agency's Copernicus programme. Please credit those sources if you use the software or its results in your own work.
+    </p>
+
+    <p style="margin:0;">
+      Full licence details are provided on the project page listed above.
+    </p>
+  </section>
+
+  <footer style="background:#12263a; border-radius:16px; padding:32px 30px; box-shadow:0 6px 24px rgba(20,50,80,0.12); color:#d6e4ef;">
+    <h2 style="font-size:1.35em; margin:0 0 14px 0; color:#ffffff; font-weight:700;">
+      🚀 Ready to Get Started?
+    </h2>
+
+    <p style="margin:0 0 22px 0; color:#c0d4e2;">
+      Visit this link to download the application, then follow the installation steps above. Within a few minutes you will have your first flood map on screen.
+    </p>
+
+    <p style="margin:0 0 22px 0;">
+      <a href="https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation"
+         style="display:inline-block; background:linear-gradient(135deg,#ff5f6d,#ffc371); color:#ffffff; font-size:1.05em; font-weight:700; text-decoration:none; padding:16px 36px; border-radius:50px; box-shadow:0 8px 20px rgba(255,95,109,0.35);">
+        Download sar-flood-segmentation
+      </a>
+    </p>
+
+    <p style="margin:0; font-size:0.9em; color:#8fa9bd; word-break:break-all;">
+      https://github.com/hyfreughurhgufrhbg/sar-flood-segmentation
+    </p>
+  </footer>
+
+</main>
+
 </body>
 </html>
